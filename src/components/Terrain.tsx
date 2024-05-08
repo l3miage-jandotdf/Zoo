@@ -1,61 +1,62 @@
 import { ReactNativeZoomableView } from '@openspacelabs/react-native-zoomable-view';
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import { Table, TableWrapper, Row, Cell } from 'react-native-table-component';
+import TerrainService from '../services/TerrainService';
+import { Case } from '../type/Case';
 
-const Grid = () => {
-  const [cellColors, setCellColors] = useState([]);
 
-  useEffect(() => {
-    // Générer les couleurs aléatoires pour chaque case une seule fois au chargement initial
-    const colors = Array(1000).fill().map(() => generateRandomColor());
-    setCellColors(colors);
-  }, []);
+const Terrain = () => {
 
-  const generateRandomColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
+    const [tableauCase, setTableauCase] = useState([]);
 
-  return (
-    <ReactNativeZoomableView
-   maxZoom={2}
-   minZoom={0.5}
-   zoomStep={0.5}
-   initialZoom={1}
-   bindToBorders={false}
-   style={{
-      padding: 10,
-      backgroundColor: 'black',
-   }}
->
-      <View style={styles.gridContainer}>
-        {/* Afficher les cases de la grille avec les couleurs générées au chargement initial */}
-        {cellColors.map((color, index) => (
-          <View key={index} style={[styles.gridCell, { backgroundColor: color }]} />
-        ))}
-      </View>
-    </ReactNativeZoomableView>
-  );
+    useEffect(() => {
+        setTableauCase(TerrainService.chargerTerrain());
+    }, []);
+
+
+    return (
+        <ReactNativeZoomableView
+            maxZoom={2}
+            minZoom={0.5}
+            zoomStep={0.5}
+            initialZoom={1}
+            bindToBorders={false}
+            style={{
+                padding: 10,
+                backgroundColor: 'black',
+            }}
+        >
+            <View style={styles.container}>
+                <Table borderStyle={{ borderColor: 'transparent' }}>
+                    {
+                        tableauCase.map((rowData, rowIndex) => (
+                            <TableWrapper key={rowIndex} style={styles.row}>
+                                {
+                                    rowData.map((caseData, cellIndex) => (   
+                                            <Cell
+                                                key={cellIndex}
+                                                textStyle={styles.text}
+                                                style={{ backgroundColor: caseData.couleur, width: 40 }}
+                                            />
+                                    ))
+                                }
+                            </TableWrapper>
+                        ))
+                    }
+                </Table>
+            </View>
+        </ReactNativeZoomableView>
+    );
 };
 
-const styles = StyleSheet.create({
-  scrollViewContainer: {
-    flexGrow: 1,
-  },
-  gridContainer: {
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-  },
-  gridCell: {
-    width: 30,
-    height: 30,
-    borderWidth: 1,
-    borderColor: 'black',
-  }
-});
+const styles = {
+    container: { flex: 1, width: 1200, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
+    head: { height: 40, width: 30, backgroundColor: '#808B97' },
+    text: { margin: 6 },
+    row: { flexDirection: 'row', backgroundColor: '#FFF1C1' },
+    btn: { width: 58, height: 18, backgroundColor: '#78B7BB', borderRadius: 2 },
+    btnText: { textAlign: 'center', color: '#fff' }
+};
 
-export default Grid;
+export default Terrain;
