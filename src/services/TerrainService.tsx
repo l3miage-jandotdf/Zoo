@@ -1,7 +1,11 @@
+import { useState } from "react";
+import { Case } from "../type/Case";
+
 const TerrainJSON = require('../../data/Terrain.json');
 
-const TerrainService = {
-  chargerTerrain: function() {
+const TerrainService = { 
+
+  chargerTerrain: function() : Case[][] {
     try {
       const terrain = TerrainJSON.map(ligne => {
         return ligne.map(caseJSON => ({
@@ -16,6 +20,10 @@ const TerrainService = {
       console.error('Erreur de lecture du fichier:', err);
       return null;
     }
+  },
+
+  placeSpecialCase : function(x : number, y : number){
+    return null;
   }
 };
 

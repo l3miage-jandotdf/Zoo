@@ -1,18 +1,23 @@
 import { ReactNativeZoomableView } from '@openspacelabs/react-native-zoomable-view';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { Table, TableWrapper, Row, Cell } from 'react-native-table-component';
 import TerrainService from '../services/TerrainService';
 import { Case } from '../type/Case';
+import TerrainContext from '../contexts/TerrainContext';
+
 
 
 const Terrain = () => {
 
+    const { terrainData } = useContext(TerrainContext);
     const [tableauCase, setTableauCase] = useState([]);
+    const [nouvelleCase, setNouvelleCase] = useState(null);
 
     useEffect(() => {
-        setTableauCase(TerrainService.chargerTerrain());
-    }, []);
+        setTableauCase(terrainData);
+    }, [terrainData]);
+
 
 
     return (
@@ -45,7 +50,12 @@ const Terrain = () => {
                         ))
                     }
                 </Table>
+                <TouchableOpacity >
+                <Text >Ajouter une Case</Text>
+            </TouchableOpacity>
             </View>
+
+            
         </ReactNativeZoomableView>
     );
 };

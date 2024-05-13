@@ -1,6 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
+import { DataProvider } from './src/contexts/TerrainContext';
+
 
 import Terrain from './src/components/Terrain';
 
@@ -9,7 +11,9 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Terrain> </Terrain>
+      <DataProvider>
+        <Terrain />
+      </DataProvider>
     </View>
   );
 }
