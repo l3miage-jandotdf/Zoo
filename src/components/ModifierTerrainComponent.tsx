@@ -23,17 +23,7 @@ const Terrain = () => {
 
 
     return (
-        <ReactNativeZoomableView
-            maxZoom={2}
-            minZoom={0.5}
-            zoomStep={0.5}
-            initialZoom={1}
-            bindToBorders={false}
-            style={{
-                padding: 10,
-                backgroundColor: 'black',
-            }}
-        >
+        
             <View style={styles.container}>
                 <Table borderStyle={{ borderColor: 'transparent' }}>
                     {
@@ -57,8 +47,6 @@ const Terrain = () => {
                 </TouchableOpacity>
             </View>
 
-            
-        </ReactNativeZoomableView>
     );
 };
 
