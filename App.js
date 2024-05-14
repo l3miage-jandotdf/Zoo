@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { DataProvider } from './src/contexts/TerrainContext';
 
 
+import MenuDeroulantComponent from './src/components/MenuDeroulantComponent';
 import Terrain from './src/components/Terrain';
 
 
@@ -14,6 +15,7 @@ export default function App() {
       <DataProvider>
         <Terrain />
       </DataProvider>
+      <MenuDeroulantComponent />
     </View>
   );
 }
