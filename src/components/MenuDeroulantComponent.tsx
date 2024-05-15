@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const DropdownMenu = () => {
   const [estOuvert, setEstOuvert] = useState(false);
@@ -7,6 +8,8 @@ const DropdownMenu = () => {
   const toggleMenu = () => {
     setEstOuvert(!estOuvert);
   };
+
+  const navigation = useNavigation();
 
   return (
     <View style={[styles.container, estOuvert ? styles.openMenu : null]}>
@@ -19,7 +22,9 @@ const DropdownMenu = () => {
       </TouchableOpacity>
       {estOuvert && (
         <View style={styles.menu}>
-          <Text>coucou</Text>
+          <TouchableOpacity style={styles.add} onPress={() => navigation.navigate('ModifierTerrainComponent')}>
+            <Text style={styles.addText}>Ajouter un terrain</Text>
+          </TouchableOpacity>
         </View>
       )}
     </View>
@@ -57,6 +62,21 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%'
   },
+  add: {
+
+    width: 250,
+    height: 150,
+    backgroundColor: "white",
+    marginTop: 20,
+    marginLeft: 30,
+  },
+  addText:{
+    fontSize:30,
+    textAlign: "center",
+    marginTop: 'auto',
+    marginBottom:'auto'
+
+  }
 });
 
 export default DropdownMenu;

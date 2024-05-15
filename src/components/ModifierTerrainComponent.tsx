@@ -1,4 +1,3 @@
-import { ReactNativeZoomableView } from '@openspacelabs/react-native-zoomable-view';
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { Table, TableWrapper, Row, Cell } from 'react-native-table-component';
@@ -7,7 +6,7 @@ import TerrainContext from '../contexts/TerrainContext';
 
 
 
-const Terrain = () => {
+const ModifierTerrain = () => {
 
     const { terrainData, setTerrainData } = useContext(TerrainContext);
     const [tableauCase, setTableauCase] = useState([]);
@@ -59,4 +58,4 @@ const styles = {
     btnText: { textAlign: 'center', color: '#fff' }
 };
 
-export default Terrain;
+export default ModifierTerrain;

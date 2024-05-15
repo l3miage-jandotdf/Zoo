@@ -1,11 +1,9 @@
-import { ReactNativeZoomableView } from '@openspacelabs/react-native-zoomable-view';
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, ImageBackground, Image } from 'react-native';
 import { Table, TableWrapper, Row, Cell } from 'react-native-table-component';
 import TerrainService from '../services/TerrainService';
 import TerrainContext from '../contexts/TerrainContext';
-import MenuDeroulantComponent from './MenuDeroulantComponent';
-
+import CaseComponent from './CaseComponent';
 
 
 const Terrain = () => {
@@ -24,17 +22,6 @@ const Terrain = () => {
 
 
     return (
-        <ReactNativeZoomableView
-            maxZoom={2}
-            minZoom={0.5}
-            zoomStep={0.5}
-            initialZoom={1}
-            bindToBorders={false}
-            style={{
-                padding: 10,
-                backgroundColor: 'black',
-            }}
-        >
             <View style={styles.container}>
                 <Table borderStyle={{ borderColor: 'transparent' }}>
                     {
@@ -42,11 +29,7 @@ const Terrain = () => {
                             <TableWrapper key={rowIndex} style={styles.row}>
                                 {
                                     rowData.map((caseData, cellIndex) => (   
-                                            <Cell
-                                                key={cellIndex}
-                                                textStyle={styles.text}
-                                                style={{ backgroundColor: caseData.couleur, width: 40 }}
-                                            />
+                                        <CaseComponent key={cellIndex} caseData={caseData} cellIndex={cellIndex} />
                                     ))
                                 }
                             </TableWrapper>
@@ -55,15 +38,14 @@ const Terrain = () => {
                 </Table>
                 <TouchableOpacity onPress={() =>AjouterCase(0,0)}>
                     <Text >Ajouter une Case</Text>
-                </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
 
-        </ReactNativeZoomableView>
+            </View>
     );
 };
 
 const styles = {
-    container: { flex: 1, width: 1200, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
+    container: { flex: 1, width: 1200, backgroundColor: '#fff' },
     head: { height: 40, width: 30, backgroundColor: '#808B97' },
     text: { margin: 6 },
     row: { flexDirection: 'row', backgroundColor: '#FFF1C1' },
