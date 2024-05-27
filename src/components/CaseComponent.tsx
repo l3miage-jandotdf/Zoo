@@ -9,11 +9,51 @@ interface CaseProps {
         couleur: string;
         image: string;
     },
-    cellIndex : number
+    cellIndex : number, 
+    length: number
 }
 
-const CaseComponent: React.FC<CaseProps> = ({ caseData, cellIndex }) => {
-    const img = require('../assets/sols/Herbe.png')
+const CaseComponent: React.FC<CaseProps> = ({ caseData, cellIndex, length }) => {
+    let img = require('../assets/sols/Default.png')
+    switch(caseData.image) { 
+        case "Herbe": { 
+            img = require('../assets/sols/Herbe.png')
+           break; 
+        } 
+        case "Herbe-bas": { 
+            img = require('../assets/sols/Herbe-bas.png')
+           break; 
+        } 
+        case "Herbe-haut": { 
+            img = require('../assets/sols/Herbe-haut.png')
+           break; 
+        } 
+        case "Herbe-droite": { 
+            img = require('../assets/sols/Herbe-droite.png')
+           break; 
+        } 
+        case "Herbe-gauche": { 
+            img = require('../assets/sols/Herbe-gauche.png')
+           break; 
+        } 
+        case "Herbe-bas-droite": { 
+            img = require('../assets/sols/Herbe-bas-droite.png')
+           break; 
+        } 
+        case "Herbe-bas-gauche": { 
+            img = require('../assets/sols/Herbe-bas-gauche.png')
+           break; 
+        } 
+        case "Herbe-haut-droite": { 
+            img = require('../assets/sols/Herbe-haut-droite.png')
+           break; 
+        } 
+        case "Herbe-haut-gauche": { 
+            img = require('../assets/sols/Herbe-haut-gauche.png')
+           break; 
+        } 
+     } 
+
     return (
         <ImageBackground 
             key={cellIndex}
@@ -22,7 +62,7 @@ const CaseComponent: React.FC<CaseProps> = ({ caseData, cellIndex }) => {
         >
             <Cell   
                 textStyle={styles.text}
-                style={{  width: 40 }}
+                style={{  width: length, height: length }}
             />
         </ImageBackground>
     );

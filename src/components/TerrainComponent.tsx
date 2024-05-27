@@ -4,21 +4,20 @@ import { Table, TableWrapper, Row, Cell } from 'react-native-table-component';
 import TerrainService from '../services/TerrainService';
 import TerrainContext from '../contexts/TerrainContext';
 import CaseComponent from './CaseComponent';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { ajouterCase, setTerrainData } from '../slices/TerrainSlice';
+import { RootState } from '../store/Store';
+import { Case } from '../type/Case';
 
 const Terrain = () => {
 
-    const { terrainData, setTerrainData } = useContext(TerrainContext);
-    const [tableauCase, setTableauCase] = useState([]);
-    const [nouvelleCase, setNouvelleCase] = useState(null);
+    const dispatch = useDispatch(); 
+    const terrainData = useSelector((state: RootState) => state.terrain.terrainData);
+    const [tableauCase, setTableauCase] = useState<Case[][]>([]);
 
     useEffect(() => {
         setTableauCase(terrainData);
     }, [terrainData]);
-
-    const AjouterCase = (x: number, y: number) : void =>{
-        TerrainService.placeSpecialCase(x, y, terrainData, setTerrainData);
-    } 
 
 
     return (
@@ -29,14 +28,14 @@ const Terrain = () => {
                             <TableWrapper key={rowIndex} style={styles.row}>
                                 {
                                     rowData.map((caseData, cellIndex) => (   
-                                        <CaseComponent key={cellIndex} caseData={caseData} cellIndex={cellIndex} />
+                                        <CaseComponent key={cellIndex} caseData={caseData} cellIndex={cellIndex} length={40}/>
                                     ))
                                 }
                             </TableWrapper>
                         ))
                     }
                 </Table>
-                <TouchableOpacity onPress={() =>AjouterCase(0,0)}>
+                <TouchableOpacity>
                     <Text >Ajouter une Case</Text>
             </TouchableOpacity>
 
@@ -45,12 +44,12 @@ const Terrain = () => {
 };
 
 const styles = {
-    container: { flex: 1, width: 1200, backgroundColor: '#fff' },
-    head: { height: 40, width: 30, backgroundColor: '#808B97' },
+    container: { flex: 1, width: 1200, backgroundColor: 'black' },
+    head: { height: 40, width: 30, backgroundColor: 'black' },
     text: { margin: 6 },
-    row: { flexDirection: 'row', backgroundColor: '#FFF1C1' },
-    btn: { width: 58, height: 18, backgroundColor: '#78B7BB', borderRadius: 2 },
-    btnText: { textAlign: 'center', color: '#fff' }
+    row: { flexDirection: 'row', backgroundColor: 'black' },
+    btn: { width: 58, height: 18, backgroundColor: 'black', borderRadius: 2 },
+    btnText: { textAlign: 'center', color: 'black' }
 };
 
 export default Terrain;

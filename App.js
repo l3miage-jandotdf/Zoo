@@ -1,44 +1,46 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { DataProvider } from './src/contexts/TerrainContext';
+import { StyleSheet} from 'react-native';
+import React from 'react';
 import MenuDeroulantComponent from './src/components/MenuDeroulantComponent';
 import ModifierTerrainComponent from './src/components/ModifierTerrainComponent';
 import EcranDeJeuPrincipalComponent from './src/components/EcranDeJeuPrincipalComponent';
 import Terrain from './src/components/TerrainComponent';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Provider } from 'react-redux'
+import store from './src/store/Store'
+
+
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <DataProvider>
-        <Stack.Navigator initialRouteName="EcranDeJeuPrincipalComponent">
-          <Stack.Screen 
-            name="Terrain" 
-            component={Terrain}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen 
-            name="ModifierTerrainComponent" 
-            component={ModifierTerrainComponent}
-            options={{ headerShown: false }} 
-          />
-          <Stack.Screen 
-            name="MenuDeroulantComponent" 
-            component={MenuDeroulantComponent}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen 
-            name="EcranDeJeuPrincipalComponent" 
-            component={EcranDeJeuPrincipalComponent}
-            options={{ headerShown: false }} 
-          />
-        </Stack.Navigator>
-      </DataProvider>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+          <Stack.Navigator initialRouteName="EcranDeJeuPrincipalComponent">
+            <Stack.Screen 
+              name="Terrain" 
+              component={Terrain}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen 
+              name="ModifierTerrainComponent" 
+              component={ModifierTerrainComponent}
+              options={{ headerShown: false }} 
+            />
+            <Stack.Screen 
+              name="MenuDeroulantComponent" 
+              component={MenuDeroulantComponent}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen 
+              name="EcranDeJeuPrincipalComponent" 
+              component={EcranDeJeuPrincipalComponent}
+              options={{ headerShown: false }} 
+            />
+          </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 
