@@ -52,6 +52,50 @@ const CaseComponent: React.FC<CaseProps> = ({ caseData, cellIndex, length }) => 
             img = require('../assets/sols/Herbe-haut-gauche.png')
            break; 
         } 
+        case "Enclos": { 
+            img = require('../assets/sols/Enclos.png')
+           break; 
+        } 
+        case "Enclos-haut": { 
+            img = require('../assets/sols/Enclos-haut.png')
+           break; 
+        }
+        case "Enclos-haut2": { 
+            img = require('../assets/sols/Enclos-haut2.gif')
+           break; 
+        }
+        case "Enclos-haut-gauche": { 
+            img = require('../assets/sols/Enclos-haut-gauche.png')
+           break; 
+        }
+        case "Enclos-haut-droite": { 
+            img = require('../assets/sols/Enclos-haut-gauche.png')
+           break; 
+        }
+        case "Enclos-gauche": { 
+            img = require('../assets/sols/Enclos-gauche.png')
+           break; 
+        }
+        case "Enclos-bas-gauche": { 
+            img = require('../assets/sols/Enclos-bas-gauche.png')
+           break; 
+        }
+        case "Enclos-bas-droite": { 
+            img = require('../assets/sols/Enclos-bas-droite.png')
+           break; 
+        }
+        case "Enclos-bas": { 
+            img = require('../assets/sols/Enclos-bas.png')
+           break; 
+        }
+        case "Enclos-droite": { 
+            img = require('../assets/sols/Enclos-droite.png')
+           break; 
+        }
+        case "Zebre": { 
+            img = require('../assets/sols/Zebre.gif')
+           break; 
+        }
      } 
 
     return (
