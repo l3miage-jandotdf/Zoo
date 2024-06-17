@@ -22,8 +22,31 @@ const DropdownMenu = () => {
       </TouchableOpacity>
       {estOuvert && (
         <View style={styles.menu}>
-          <TouchableOpacity style={styles.add} onPress={() => navigation.navigate('ModifierTerrainComponent')}>
-            <Text style={styles.addText}>Ajouter un terrain</Text>
+          <TouchableOpacity
+            style={styles.add}
+            onPress={() =>
+              {
+                setEstOuvert(false);
+                navigation.navigate('ModifierTerrainComponent', {
+                  terrainType: 'Enclos',
+                })
+              }
+            }
+          >
+            <Text style={styles.addText}>Ajouter un enclos</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.add}
+            onPress={() =>
+              {
+                setEstOuvert(false);
+                navigation.navigate('ModifierTerrainComponent', {
+                  terrainType: 'Zebre',
+                })
+              }
+            }
+          >
+            <Text style={styles.addText}>Ajouter un zèbre</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -55,7 +78,7 @@ const styles = StyleSheet.create({
   menu: {
     position: 'absolute',
     top: 0,
-    right:0,
+    right: 0,
     transform: [{ translateX: 100 }],
     backgroundColor: 'lightblue',
     elevation: 999,
@@ -63,19 +86,17 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   add: {
-
     width: 250,
     height: 150,
     backgroundColor: "white",
     marginTop: 20,
     marginLeft: 30,
   },
-  addText:{
-    fontSize:30,
+  addText: {
+    fontSize: 30,
     textAlign: "center",
     marginTop: 'auto',
-    marginBottom:'auto'
-
+    marginBottom: 'auto'
   }
 });
 

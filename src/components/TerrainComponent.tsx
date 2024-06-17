@@ -1,17 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Alert, ImageBackground, Image } from 'react-native';
-import { Table, TableWrapper, Row, Cell } from 'react-native-table-component';
-import TerrainService from '../services/TerrainService';
-import TerrainContext from '../contexts/TerrainContext';
+import React, {useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity} from 'react-native';
+import { Table, TableWrapper } from 'react-native-table-component';
 import CaseComponent from './CaseComponent';
-import { useSelector, useDispatch } from 'react-redux';
-import { ajouterCase, setTerrainData } from '../slices/TerrainSlice';
+import { useSelector } from 'react-redux';
 import { RootState } from '../store/Store';
 import { Case } from '../type/Case';
 
 const Terrain = () => {
 
-    const dispatch = useDispatch(); 
     const terrainData = useSelector((state: RootState) => state.terrain.terrainData);
     const [tableauCase, setTableauCase] = useState<Case[][]>([]);
 
@@ -37,7 +33,7 @@ const Terrain = () => {
                 </Table>
                 <TouchableOpacity>
                     <Text >Ajouter une Case</Text>
-            </TouchableOpacity>
+                </TouchableOpacity>
 
             </View>
     );

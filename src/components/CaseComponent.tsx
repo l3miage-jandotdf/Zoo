@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, ImageBackground, StyleSheet } from 'react-native';
-import { Table, TableWrapper, Row, Cell } from 'react-native-table-component';
+import { ImageBackground, StyleSheet } from 'react-native';
+import { Cell } from 'react-native-table-component';
 
 
 interface CaseProps {
@@ -69,7 +69,7 @@ const CaseComponent: React.FC<CaseProps> = ({ caseData, cellIndex, length }) => 
            break; 
         }
         case "Enclos-haut-droite": { 
-            img = require('../assets/sols/Enclos-haut-gauche.png')
+            img = require('../assets/sols/Enclos-haut-droite.png')
            break; 
         }
         case "Enclos-gauche": { 

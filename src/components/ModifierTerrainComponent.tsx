@@ -1,40 +1,69 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, PanResponder, PanResponderInstance } from 'react-native';
-import { Table, TableWrapper, Cell } from 'react-native-table-component';
+import React, { useEffect, useState} from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions} from 'react-native';
+import { Table, TableWrapper } from 'react-native-table-component';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/Store';
 import { Case } from '../type/Case';
 import CaseComponent from './CaseComponent';
-import { useNavigation } from '@react-navigation/native';
-import { setTerrainData } from '../slices/TerrainSlice'; 
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { setTerrainData } from '../slices/TerrainSlice';
 import NouvelleCaseComponent from './NouvelleCaseComponent';
+import CaseService from '../services/CaseService';
+
+
+interface RouteParams {
+    terrainType: string;
+}
+
+type ModifierTerrainRouteProp = RouteProp<{ params: RouteParams }, 'params'>;
 
 const ModifierTerrain = () => {
     const dispatch = useDispatch();
     const terrainData = useSelector((state: RootState) => state.terrain.terrainData);
     const [tableauCase, setTableauCase] = useState<Case[][]>([]);
     const { width, height } = Dimensions.get('window');
-    const navigation = useNavigation();
     const cellSize = Math.min(width / (terrainData[0]?.length || 1), height / terrainData.length);
-    const newCase = { id: 99, couleur: '#FFFFFF', image: 'Zebre' };
     const [caseCoordinates, setCaseCoordinates] = useState<[number, number]>([0, 0]);
+    const navigation = useNavigation();
+    const route = useRoute<ModifierTerrainRouteProp>();
+    const { terrainType } = route.params || {};
+    const [cases, setCases] = useState<Case[][]>([[]]);
+    const [casesWidth, setCasesWidth] = useState(1);
+    const [casesHeight, setCasesHeight] = useState(1);
 
     useEffect(() => {
         if (terrainData.length > 0 && terrainData[0].length > 0) {
-            setTableauCase(terrainData);
+        setTableauCase(terrainData);
         }
     }, [terrainData]);
 
+    useEffect(() => {
+        if (cases.length !== 0){
+            setCasesWidth(cases[0].length);
+            setCasesHeight(cases.length);
+        }
+    }, [cases]);
+
+    useEffect(() => {
+        console.log(casesHeight)
+    }, [casesHeight]);
+
+    useEffect(() => {
+        setCases(CaseService.renderCases(terrainType));
+    }, []);
+
     const handleConfirm = () => {
         const [x, y] = caseCoordinates;
-        console.log('Case coordinates:', caseCoordinates);
     
         if (y >= 0 && y < tableauCase.length && x >= 0 && x < tableauCase[y].length) {
             const updatedTerrain = tableauCase.map(row => [...row]);
-    
-            updatedTerrain[y][x] = newCase;
-            console.log('Updated terrain:', updatedTerrain);
-    
+            
+            cases.map((ligneDeCases : Case[], i) => {
+                ligneDeCases.map((caseSeule : Case, j) => {
+                    updatedTerrain[y+i][x+j] = caseSeule; 
+                });
+            });
+
             setTableauCase(updatedTerrain);
             dispatch(setTerrainData(updatedTerrain));
             navigation.navigate('EcranDeJeuPrincipalComponent');
@@ -55,7 +84,7 @@ const ModifierTerrain = () => {
                             ))}
                         </TableWrapper>
                     ))}
-                    <NouvelleCaseComponent x={cellSize} terrainWidth={terrainData[0]?.length} terrainHeight={terrainData.length} setCaseCoordinates={setCaseCoordinates} />
+                    <NouvelleCaseComponent x={cellSize} terrainWidth={terrainData[0]?.length} terrainHeight={terrainData.length} setCaseCoordinates={setCaseCoordinates} cases={cases} casesWidth={casesWidth} casesHeight={casesHeight}/>
                 </Table>
             </View>
             

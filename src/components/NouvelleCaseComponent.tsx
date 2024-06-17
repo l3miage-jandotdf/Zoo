@@ -1,14 +1,22 @@
-import React, { useRef } from 'react';
-import { View, StyleSheet, PanResponder, Animated } from 'react-native';
+import React, {useRef} from 'react';
+import { StyleSheet, PanResponder, Animated } from 'react-native';
+import { Case } from '../type/Case';
+import CaseComponent from './CaseComponent';
+import { Table, TableWrapper } from 'react-native-table-component';
+
 
 interface NouvelleCaseProps {
     x: number;
     terrainWidth: number;
     terrainHeight: number;
     setCaseCoordinates: (coordinates: [number, number]) => void;
+    cases : Case[][];
+    casesWidth : number; //TOFIX
+    casesHeight : number; //TOFIX
 }
 
-const NouvelleCaseComponent: React.FC<NouvelleCaseProps> = ({ x, terrainWidth, terrainHeight, setCaseCoordinates }) => {
+const NouvelleCaseComponent: React.FC<NouvelleCaseProps> = ({ x, terrainWidth, terrainHeight, setCaseCoordinates, cases, casesWidth, casesHeight }) => {
+
     const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
 
     const panResponder = useRef(
@@ -16,12 +24,11 @@ const NouvelleCaseComponent: React.FC<NouvelleCaseProps> = ({ x, terrainWidth, t
             onStartShouldSetPanResponder: () => true,
             onMoveShouldSetPanResponder: () => true,
             onPanResponderGrant: () => {
-                // Set the current offset to the current position
                 position.setOffset({
                     x: position.x._value,
                     y: position.y._value,
                 });
-                position.setValue({ x: 0, y: 0 }); // Reset the animated value to avoid double counting the offset
+                position.setValue({ x: 0, y: 0 });
             },
             onPanResponderMove: Animated.event(
                 [
@@ -30,18 +37,16 @@ const NouvelleCaseComponent: React.FC<NouvelleCaseProps> = ({ x, terrainWidth, t
                 ],
                 { useNativeDriver: false }
             ),
-            onPanResponderRelease: (e, gestureState) => {
-                // Calculate the new coordinates snapped to x increments
+            onPanResponderRelease: () => {
                 let newX = Math.round((position.x._value + position.x._offset) / x) * x;
                 let newY = Math.round((position.y._value + position.y._offset) / x) * x;
-
-                if (newX >= Math.floor((x*terrainWidth)))(newX= x*terrainWidth - x);
-                if (newY >= Math.floor((x*terrainHeight)))(newY= x*terrainHeight - x);
+                console.log(casesHeight);
+                if (newX >= Math.floor((x*terrainWidth)))(newX= x*terrainWidth - casesWidth * x);
+                if (newY >= Math.floor((x*terrainHeight)))(newY= x*terrainHeight - casesHeight * x);
 
                 position.flattenOffset(); 
                 position.setValue({ x: newX, y: newY });
 
-                // Update the parent component with the new coordinates
                 setCaseCoordinates([newX / x, newY / x]);
             }
         })
@@ -52,12 +57,26 @@ const NouvelleCaseComponent: React.FC<NouvelleCaseProps> = ({ x, terrainWidth, t
             {...panResponder.panHandlers}
             style={[styles.case, { transform: position.getTranslateTransform(), width: x, height: x }]}
         >
-            <View style={styles.innerCase} />
+            <Table borderStyle={{ borderColor: 'transparent' }}>
+            {
+                cases.map((ligneDeCases : Case[], i) => (
+                    <TableWrapper key={i} style={styles.row}>
+                    {
+                        ligneDeCases.map((caseSeule : Case, j) => (
+                            <CaseComponent key={i+j} caseData={caseSeule} cellIndex={1} length={x}/>
+                        ))
+                    }
+                    </TableWrapper>
+                ))
+            }
+            </Table>
+            
         </Animated.View>
     );
 };
 
 const styles = StyleSheet.create({
+    row: { flexDirection: 'row', backgroundColor: 'black' },
     case: {
         position: 'absolute',
         backgroundColor: 'transparent',
@@ -65,7 +84,7 @@ const styles = StyleSheet.create({
     innerCase: {
         width: '100%',
         height: '100%',
-        backgroundColor: '#FFFFFF', // Default case color
+        backgroundColor: '#FFFFFF',
     },
 });
 
