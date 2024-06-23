@@ -8,32 +8,36 @@ const CaseService = {
         case "Enclos": {
             cases = [
                 [    
-                    { id: 1, couleur: '#FFFFFF', image: 'Enclos-haut-gauche' },
-                    { id: 1, couleur: '#FFFFFF', image: 'Enclos-haut' },
-                    { id: 1, couleur: '#FFFFFF', image: 'Enclos-haut' },
-                    { id: 1, couleur: '#FFFFFF', image: 'Enclos-haut2' },
-                    { id: 1, couleur: '#FFFFFF', image: 'Enclos-haut-droite' },
+                    { id: 1, image: 'Enclos-haut-gauche', sol: 'Enclos-occupe' },
+                    { id: 1, image: 'Enclos-haut', sol: 'Enclos-occupe' },
+                    { id: 1, image: 'Enclos-haut', sol: 'Enclos-occupe' },
+                    { id: 1, image: 'Enclos-haut2', sol: 'Enclos-occupe' },
+                    { id: 1, image: 'Enclos-haut-droite', sol: 'Enclos-occupe' },
                 ],
                 [    
-                    { id: 1, couleur: '#FFFFFF', image: 'Enclos-gauche' },
-                    { id: 1, couleur: '#FFFFFF', image: 'Enclos' },
-                    { id: 1, couleur: '#FFFFFF', image: 'Enclos' },
-                    { id: 1, couleur: '#FFFFFF', image: 'Enclos' },
-                    { id: 1, couleur: '#FFFFFF', image: 'Enclos-droite' },
+                    { id: 1, image: 'Enclos-gauche', sol: 'Enclos-occupe' },
+                    { id: 1, image: 'Enclos', sol: 'Enclos-herbe' },
+                    { id: 1, image: 'Enclos', sol: 'Enclos-herbe' },
+                    { id: 1, image: 'Enclos', sol: 'Enclos-herbe' },
+                    { id: 1, image: 'Enclos-droite', sol: 'Enclos-occupe' },
                 ],
                 [    
-                    { id: 1, couleur: '#FFFFFF', image: 'Enclos-bas-gauche' },
-                    { id: 1, couleur: '#FFFFFF', image: 'Enclos-bas' },
-                    { id: 1, couleur: '#FFFFFF', image: 'Enclos-bas' },
-                    { id: 1, couleur: '#FFFFFF', image: 'Enclos-bas' },
-                    { id: 1, couleur: '#FFFFFF', image: 'Enclos-bas-droite' },
+                    { id: 1, image: 'Enclos-bas-gauche', sol: 'Enclos-occupe' },
+                    { id: 1, image: 'Enclos-bas', sol: 'Enclos-occupe' },
+                    { id: 1, image: 'Enclos-bas', sol: 'Enclos-occupe' },
+                    { id: 1, image: 'Enclos-bas', sol: 'Enclos-occupe' },
+                    { id: 1, image: 'Enclos-bas-droite', sol: 'Enclos-occupe' },
                 ]
             ]
             console.log("pouet")
             break;
         }
         case "Zebre":{
-            cases = [[{ id: 1, couleur: '#FFFFFF', image: 'Zebre' }]];
+            cases = [[{ id: 1, image: 'Zebre', sol: 'Animal' }]];
+            break;
+        }
+        case "Autruche":{
+            cases = [[{ id: 1, image: 'Autruche', sol: 'Animal' }]];
             break;
         }
     }

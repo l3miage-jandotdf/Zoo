@@ -28,8 +28,7 @@ const ModifierTerrain = () => {
     const route = useRoute<ModifierTerrainRouteProp>();
     const { terrainType } = route.params || {};
     const [cases, setCases] = useState<Case[][]>([[]]);
-    const [casesWidth, setCasesWidth] = useState(1);
-    const [casesHeight, setCasesHeight] = useState(1);
+    const [boutonValideBloque, setBoutonValideBloque] = useState<boolean>(true);
 
     useEffect(() => {
         if (terrainData.length > 0 && terrainData[0].length > 0) {
@@ -38,19 +37,24 @@ const ModifierTerrain = () => {
     }, [terrainData]);
 
     useEffect(() => {
-        if (cases.length !== 0){
-            setCasesWidth(cases[0].length);
-            setCasesHeight(cases.length);
-        }
-    }, [cases]);
-
-    useEffect(() => {
-        console.log(casesHeight)
-    }, [casesHeight]);
-
-    useEffect(() => {
         setCases(CaseService.renderCases(terrainType));
     }, []);
+
+    const checkIfSolIsOk = (x: number, y: number, caseLibre: string) : boolean => {
+        let placementOk = true;
+
+        cases.map((ligneDeCases : Case[], i) => {
+            ligneDeCases.map((caseSeule : Case, j) => {
+                if (tableauCase[y+i][x+j].sol !== caseLibre){
+                    placementOk = false;
+                }
+            });
+        });
+
+        setBoutonValideBloque(!placementOk)
+
+        return placementOk;
+    }
 
     const handleConfirm = () => {
         const [x, y] = caseCoordinates;
@@ -80,11 +84,11 @@ const ModifierTerrain = () => {
                     {tableauCase.map((rowData, rowIndex) => (
                         <TableWrapper key={rowIndex} style={styles.row}>
                             {rowData.map((caseData, cellIndex) => (
-                                <CaseComponent key={cellIndex} caseData={caseData} cellIndex={cellIndex} length={cellSize} />
+                                <CaseComponent key={cellIndex} caseData={caseData} cellIndex={cellIndex} length={cellSize} placementOk={true}/>
                             ))}
                         </TableWrapper>
                     ))}
-                    <NouvelleCaseComponent x={cellSize} terrainWidth={terrainData[0]?.length} terrainHeight={terrainData.length} setCaseCoordinates={setCaseCoordinates} cases={cases} casesWidth={casesWidth} casesHeight={casesHeight}/>
+                    <NouvelleCaseComponent x={cellSize} terrainWidth={terrainData[0]?.length} terrainHeight={terrainData.length} setCaseCoordinates={setCaseCoordinates} cases={cases} checkIfSolIsOk = {checkIfSolIsOk}/>
                 </Table>
             </View>
             
@@ -92,7 +96,11 @@ const ModifierTerrain = () => {
                 <TouchableOpacity style={styles.actionButtonClose} onPress={() => navigation.navigate('EcranDeJeuPrincipalComponent')}>
                     <Text style={styles.buttonText}>✖</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.actionButtonOk} onPress={handleConfirm}>
+                <TouchableOpacity 
+                    style={[!boutonValideBloque && styles.actionButtonOk, boutonValideBloque && styles.actionButtonOkDisabled]} 
+                    onPress={handleConfirm} 
+                    disabled={boutonValideBloque}
+                >
                     <Text style={styles.buttonText}>☑</Text>
                 </TouchableOpacity>
             </View>
@@ -129,6 +137,13 @@ const styles = StyleSheet.create({
     },
     actionButtonOk: {
         backgroundColor: 'green',
+        padding: 8,
+        flex: 1,
+        marginHorizontal: 50,
+        alignItems: 'center',
+    },
+    actionButtonOkDisabled: {
+        backgroundColor: 'grey',
         padding: 8,
         flex: 1,
         marginHorizontal: 50,

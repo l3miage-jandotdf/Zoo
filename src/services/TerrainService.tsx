@@ -10,8 +10,8 @@ const TerrainService = {
       const terrain = TerrainJSON.map(ligne => {
         return ligne.map(caseJSON => ({
           id: caseJSON.id,
-          couleur: caseJSON.couleur,
-          image: caseJSON.image
+          image: caseJSON.image,
+          sol : caseJSON.sol
         }));
       });
 

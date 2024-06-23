@@ -1,19 +1,20 @@
 import React from 'react';
-import { ImageBackground, StyleSheet } from 'react-native';
+import { ImageBackground, StyleSheet, View } from 'react-native';
 import { Cell } from 'react-native-table-component';
 
 
 interface CaseProps {
     caseData: {
         id: number;
-        couleur: string;
         image: string;
+        sol: string;
     },
     cellIndex : number, 
-    length: number
+    length: number,
+    placementOk : boolean
 }
 
-const CaseComponent: React.FC<CaseProps> = ({ caseData, cellIndex, length }) => {
+const CaseComponent: React.FC<CaseProps> = ({ caseData, cellIndex, length, placementOk }) => {
     let img = require('../assets/sols/Default.png')
     switch(caseData.image) { 
         case "Herbe": { 
@@ -92,8 +93,16 @@ const CaseComponent: React.FC<CaseProps> = ({ caseData, cellIndex, length }) => 
             img = require('../assets/sols/Enclos-droite.png')
            break; 
         }
+        case "Chemin": { 
+            img = require('../assets/sols/Chemin.png')
+           break; 
+        }
         case "Zebre": { 
             img = require('../assets/sols/Zebre.gif')
+           break; 
+        }
+        case "Autruche": { 
+            img = require('../assets/sols/Autruche.gif')
            break; 
         }
      } 
@@ -104,16 +113,23 @@ const CaseComponent: React.FC<CaseProps> = ({ caseData, cellIndex, length }) => 
             resizeMode="cover"
             source={img}
         >
-            <Cell   
-                textStyle={styles.text}
-                style={{  width: length, height: length }}
-            />
+            <View style={[styles.case, !placementOk && styles.invalidPlacement]}>
+                <Cell   
+                    textStyle={styles.text}
+                    style={{  width: length, height: length }}
+                />
+            </View>
         </ImageBackground>
     );
 };
 
 const styles = StyleSheet.create({
-    text: { margin: 6 }
+    text: { margin: 6 },
+    case: {
+    },
+    invalidPlacement: {
+        backgroundColor: 'rgba(255, 0, 0, 0.3)', // rouge avec opacité
+    }
 });
 
 export default CaseComponent;

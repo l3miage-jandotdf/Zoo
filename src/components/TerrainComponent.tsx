@@ -24,7 +24,7 @@ const Terrain = () => {
                             <TableWrapper key={rowIndex} style={styles.row}>
                                 {
                                     rowData.map((caseData, cellIndex) => (   
-                                        <CaseComponent key={cellIndex} caseData={caseData} cellIndex={cellIndex} length={40}/>
+                                        <CaseComponent key={cellIndex} caseData={caseData} cellIndex={cellIndex} length={40} placementOk={true}/>
                                     ))
                                 }
                             </TableWrapper>

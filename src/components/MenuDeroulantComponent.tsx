@@ -35,6 +35,7 @@ const DropdownMenu = () => {
           >
             <Text style={styles.addText}>Ajouter un enclos</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
             style={styles.add}
             onPress={() =>
@@ -48,6 +49,21 @@ const DropdownMenu = () => {
           >
             <Text style={styles.addText}>Ajouter un zèbre</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.add}
+            onPress={() =>
+              {
+                setEstOuvert(false);
+                navigation.navigate('AjouterCheminComponent', {
+                  terrainType: 'Chemin',
+                })
+              }
+            }
+          >
+            <Text style={styles.addText}>Ajouter un chemin</Text>
+          </TouchableOpacity>
+
         </View>
       )}
     </View>
@@ -87,7 +103,7 @@ const styles = StyleSheet.create({
   },
   add: {
     width: 250,
-    height: 150,
+    height: 120,
     backgroundColor: "white",
     marginTop: 20,
     marginLeft: 30,
