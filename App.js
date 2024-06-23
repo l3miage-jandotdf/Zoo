@@ -10,6 +10,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux'
 import store from './src/store/Store'
 import MusiqueComponent from './src/components/MusiqueComponent';
+import AccueilComponent from './src/components/AccueilComponent';
 
 
 
@@ -20,7 +21,12 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-          <Stack.Navigator initialRouteName="EcranDeJeuPrincipalComponent">
+          <Stack.Navigator initialRouteName="AccueilComponent">
+            <Stack.Screen 
+                name="AccueilComponent" 
+                component={AccueilComponent}
+                options={{ headerShown: false }}
+              />
             <Stack.Screen 
               name="Terrain" 
               component={Terrain}

@@ -49,11 +49,9 @@ const NouvelleCaseComponent: React.FC<NouvelleCaseProps> = ({ x, terrainWidth, t
                     const casesHeight = cases.length;
 
                     if (newX >= x * terrainWidth - casesWidth * x) {
-                        console.log("nooooon");
                         newX = x * terrainWidth - (casesWidth * x);
                     }
                     if (newY >= x * terrainHeight - casesHeight * x) {
-                        console.log("nooooooooooooon");
                         newY = x * terrainHeight - (casesHeight * x);
                     }
 

@@ -29,7 +29,6 @@ const CaseService = {
                     { id: 1, image: 'Enclos-bas-droite', sol: 'Enclos-occupe' },
                 ]
             ]
-            console.log("pouet")
             break;
         }
         case "Zebre":{
