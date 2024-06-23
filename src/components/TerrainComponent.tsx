@@ -1,41 +1,64 @@
-import React, {useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { Table, TableWrapper } from 'react-native-table-component';
 import CaseComponent from './CaseComponent';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/Store';
 import { Case } from '../type/Case';
+import BonhommeComponent from './BonhommeComponent'; 
 
 const Terrain = () => {
-
     const terrainData = useSelector((state: RootState) => state.terrain.terrainData);
     const [tableauCase, setTableauCase] = useState<Case[][]>([]);
+    const [bonhommes, setBonhommes] = useState([]);
 
     useEffect(() => {
         setTableauCase(terrainData);
+        if (terrainData.length > 0) {
+            initBonhommes(terrainData);
+        }
     }, [terrainData]);
 
+    const initBonhommes = (terrain) => {
+        const chemins = [];
+        for (let y = 0; y < terrain.length; y++) {
+            for (let x = 0; x < terrain[y].length; x++) {
+                if (terrain[y][x].sol === 'Chemin') {
+                    chemins.push({ x, y });
+                }
+            }
+        }
+
+        const randomChemins = chemins.sort(() => 0.5 - Math.random()).slice(0, 8); 
+        setBonhommes(randomChemins.map(c => ({
+            id: `${c.x}-${c.y}`,
+            initialPosition: { x: c.x * 40, y: c.y * 40 }
+        })));
+    };
 
     return (
-            <View style={styles.container}>
-                <Table borderStyle={{ borderColor: 'transparent' }}>
-                    {
-                        tableauCase.map((rowData, rowIndex) => (
-                            <TableWrapper key={rowIndex} style={styles.row}>
-                                {
-                                    rowData.map((caseData, cellIndex) => (   
-                                        <CaseComponent key={cellIndex} caseData={caseData} cellIndex={cellIndex} length={40} placementOk={true}/>
-                                    ))
-                                }
-                            </TableWrapper>
-                        ))
-                    }
-                </Table>
-                <TouchableOpacity>
-                    <Text >Ajouter une Case</Text>
-                </TouchableOpacity>
-
-            </View>
+        <View style={styles.container}>
+            <Table borderStyle={{ borderColor: 'transparent' }}>
+                {tableauCase.map((rowData, rowIndex) => (
+                    <TableWrapper key={rowIndex} style={styles.row}>
+                        {rowData.map((caseData, cellIndex) => (
+                            <CaseComponent key={cellIndex} caseData={caseData} cellIndex={cellIndex} length={40} placementOk={true} />
+                        ))}
+                    </TableWrapper>
+                ))}
+            </Table>
+            {bonhommes.map(bonhomme => (
+                <BonhommeComponent
+                    key={bonhomme.id}
+                    initialPosition={bonhomme.initialPosition}
+                    tableauCase={tableauCase}
+                    cellSize={40}
+                />
+            ))}
+            <TouchableOpacity>
+                <Text>Ajouter une Case</Text>
+            </TouchableOpacity>
+        </View>
     );
 };
 

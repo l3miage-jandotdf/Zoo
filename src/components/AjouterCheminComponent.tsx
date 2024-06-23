@@ -45,7 +45,7 @@ const AjouterChemin = () => {
 
         // Ajouter le chemin tracé au terrain
         cheminTrace.map(([x, y]) => {
-            updatedTerrain[y][x] = { id: 1, image: 'Chemin', sol: 'Sol-herbe' };
+            updatedTerrain[y][x] = { id: 1, image: 'Chemin', sol: 'Chemin' };
         });
 
         setTableauCase(updatedTerrain);
