@@ -8,6 +8,7 @@ import CaseComponent from './CaseComponent';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { setTerrainData } from '../slices/TerrainSlice';
 import CaseService from '../services/CaseService';
+import Spinner from './SpinnerComponent';
 
 interface RouteParams {
     terrainType: string;
@@ -24,21 +25,18 @@ const AjouterChemin = () => {
     const navigation = useNavigation();
     const route = useRoute<AjouterCheminRouteProp>();
     const { terrainType } = route.params || {};
-    const [cases, setCases] = useState<Case[][]>([[]]);
     const [boutonValideBloque, setBoutonValideBloque] = useState<boolean>(true);
     const [panResponder, setPanResponder] = useState(null);
     const [cheminTrace, setCheminTrace] = useState<[number, number][]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
 
     useEffect(() => {
         if (terrainData.length > 0 && terrainData[0].length > 0) {
             setTableauCase(terrainData);
+            setLoading(false);
         }
     }, [terrainData]);
-
-    useEffect(() => {
-        setCases(CaseService.renderCases(terrainType));
-    }, []);
 
     const handleConfirm = () => {
         const updatedTerrain = tableauCase.map(row => [...row]);
@@ -89,6 +87,9 @@ const AjouterChemin = () => {
         }
     };
     
+    if (loading) {
+        return <Spinner />; 
+    }
 
     return (
         <View style={styles.container}>

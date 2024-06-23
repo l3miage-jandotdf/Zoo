@@ -105,6 +105,10 @@ const CaseComponent: React.FC<CaseProps> = ({ caseData, cellIndex, length, place
             img = require('../assets/sols/Autruche.gif')
            break; 
         }
+        case "Panda": { 
+            img = require('../assets/sols/Panda.gif')
+           break; 
+        }
      } 
 
     return (

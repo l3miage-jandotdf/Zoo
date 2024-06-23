@@ -39,6 +39,10 @@ const CaseService = {
             cases = [[{ id: 1, image: 'Autruche', sol: 'Animal' }]];
             break;
         }
+        case "Panda":{
+            cases = [[{ id: 1, image: 'Panda', sol: 'Animal' }]];
+            break;
+        }
     }
     return cases;
   },

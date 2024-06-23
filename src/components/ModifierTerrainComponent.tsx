@@ -1,5 +1,5 @@
-import React, { useEffect, useState} from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { Table, TableWrapper } from 'react-native-table-component';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/Store';
@@ -9,7 +9,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { setTerrainData } from '../slices/TerrainSlice';
 import NouvelleCaseComponent from './NouvelleCaseComponent';
 import CaseService from '../services/CaseService';
-
+import Spinner from './SpinnerComponent'; // Import du composant Spinner
 
 interface RouteParams {
     terrainType: string;
@@ -29,10 +29,12 @@ const ModifierTerrain = () => {
     const { terrainType } = route.params || {};
     const [cases, setCases] = useState<Case[][]>([[]]);
     const [boutonValideBloque, setBoutonValideBloque] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(true); // État de chargement pour afficher le spinner
 
     useEffect(() => {
         if (terrainData.length > 0 && terrainData[0].length > 0) {
-        setTableauCase(terrainData);
+            setTableauCase(terrainData);
+            setLoading(false);
         }
     }, [terrainData]);
 
@@ -40,31 +42,31 @@ const ModifierTerrain = () => {
         setCases(CaseService.renderCases(terrainType));
     }, []);
 
-    const checkIfSolIsOk = (x: number, y: number, caseLibre: string) : boolean => {
+    const checkIfSolIsOk = (x: number, y: number, caseLibre: string): boolean => {
         let placementOk = true;
 
-        cases.map((ligneDeCases : Case[], i) => {
-            ligneDeCases.map((caseSeule : Case, j) => {
-                if (tableauCase[y+i][x+j].sol !== caseLibre){
+        cases.map((ligneDeCases: Case[], i) => {
+            ligneDeCases.map((caseSeule: Case, j) => {
+                if (tableauCase[y + i][x + j].sol !== caseLibre) {
                     placementOk = false;
                 }
             });
         });
 
-        setBoutonValideBloque(!placementOk)
+        setBoutonValideBloque(!placementOk);
 
         return placementOk;
-    }
+    };
 
     const handleConfirm = () => {
         const [x, y] = caseCoordinates;
-    
+
         if (y >= 0 && y < tableauCase.length && x >= 0 && x < tableauCase[y].length) {
             const updatedTerrain = tableauCase.map(row => [...row]);
-            
-            cases.map((ligneDeCases : Case[], i) => {
-                ligneDeCases.map((caseSeule : Case, j) => {
-                    updatedTerrain[y+i][x+j] = caseSeule; 
+
+            cases.map((ligneDeCases: Case[], i) => {
+                ligneDeCases.map((caseSeule: Case, j) => {
+                    updatedTerrain[y + i][x + j] = caseSeule;
                 });
             });
 
@@ -76,29 +78,48 @@ const ModifierTerrain = () => {
         }
     };
 
+    if (loading) {
+        return <Spinner />; // Afficher le spinner pendant le chargement initial
+    }
 
     return (
-        <View style={styles.container} >
+        <View style={styles.container}>
             <View>
                 <Table borderStyle={{ borderColor: 'transparent' }}>
                     {tableauCase.map((rowData, rowIndex) => (
                         <TableWrapper key={rowIndex} style={styles.row}>
                             {rowData.map((caseData, cellIndex) => (
-                                <CaseComponent key={cellIndex} caseData={caseData} cellIndex={cellIndex} length={cellSize} placementOk={true}/>
+                                <CaseComponent
+                                    key={cellIndex}
+                                    caseData={caseData}
+                                    cellIndex={cellIndex}
+                                    length={cellSize}
+                                    placementOk={true}
+                                />
                             ))}
                         </TableWrapper>
                     ))}
-                    <NouvelleCaseComponent x={cellSize} terrainWidth={terrainData[0]?.length} terrainHeight={terrainData.length} setCaseCoordinates={setCaseCoordinates} cases={cases} checkIfSolIsOk = {checkIfSolIsOk}/>
+                    <NouvelleCaseComponent
+                        x={cellSize}
+                        terrainWidth={terrainData[0]?.length}
+                        terrainHeight={terrainData.length}
+                        setCaseCoordinates={setCaseCoordinates}
+                        cases={cases}
+                        checkIfSolIsOk={checkIfSolIsOk}
+                    />
                 </Table>
             </View>
-            
+
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.actionButtonClose} onPress={() => navigation.navigate('EcranDeJeuPrincipalComponent')}>
+                <TouchableOpacity
+                    style={styles.actionButtonClose}
+                    onPress={() => navigation.navigate('EcranDeJeuPrincipalComponent')}
+                >
                     <Text style={styles.buttonText}>✖</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                    style={[!boutonValideBloque && styles.actionButtonOk, boutonValideBloque && styles.actionButtonOkDisabled]} 
-                    onPress={handleConfirm} 
+                <TouchableOpacity
+                    style={[!boutonValideBloque && styles.actionButtonOk, boutonValideBloque && styles.actionButtonOkDisabled]}
+                    onPress={handleConfirm}
                     disabled={boutonValideBloque}
                 >
                     <Text style={styles.buttonText}>☑</Text>
@@ -133,7 +154,7 @@ const styles = StyleSheet.create({
         padding: 8,
         flex: 1,
         marginHorizontal: 50,
-        alignItems: 'center'
+        alignItems: 'center',
     },
     actionButtonOk: {
         backgroundColor: 'green',
@@ -148,7 +169,7 @@ const styles = StyleSheet.create({
         flex: 1,
         marginHorizontal: 50,
         alignItems: 'center',
-    }
+    },
 });
 
 export default ModifierTerrain;

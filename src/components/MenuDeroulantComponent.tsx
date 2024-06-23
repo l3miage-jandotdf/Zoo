@@ -55,6 +55,34 @@ const DropdownMenu = () => {
             onPress={() =>
               {
                 setEstOuvert(false);
+                navigation.navigate('ModifierTerrainComponent', {
+                  terrainType: 'Autruche',
+                })
+              }
+            }
+          >
+            <Text style={styles.addText}>Ajouter une autruche</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.add}
+            onPress={() =>
+              {
+                setEstOuvert(false);
+                navigation.navigate('ModifierTerrainComponent', {
+                  terrainType: 'Panda',
+                })
+              }
+            }
+          >
+            <Text style={styles.addText}>Ajouter un panda</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.add}
+            onPress={() =>
+              {
+                setEstOuvert(false);
                 navigation.navigate('AjouterCheminComponent', {
                   terrainType: 'Chemin',
                 })
@@ -102,14 +130,14 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   add: {
-    width: 250,
-    height: 120,
+    width: 200,
+    height: 50,
     backgroundColor: "white",
     marginTop: 20,
     marginLeft: 30,
   },
   addText: {
-    fontSize: 30,
+    fontSize: 20,
     textAlign: "center",
     marginTop: 'auto',
     marginBottom: 'auto'
