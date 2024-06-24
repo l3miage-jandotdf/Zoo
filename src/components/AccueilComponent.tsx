@@ -5,6 +5,7 @@ import * as ScreenOrientation from 'expo-screen-orientation';
 
 const HomeScreen = ({ navigation }) => {
     const { width, height } = Dimensions.get('window');
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
 
     const handlePress = async () => {
         await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT);

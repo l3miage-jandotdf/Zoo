@@ -93,6 +93,22 @@ const CaseComponent: React.FC<CaseProps> = ({ caseData, cellIndex, length, place
             img = require('../assets/sols/Enclos-droite.png')
            break; 
         }
+        case "Cafe-bas-gauche": { 
+            img = require('../assets/sols/Cafe-bas-gauche.png')
+           break; 
+        }
+        case "Cafe-bas-droite": { 
+            img = require('../assets/sols/Cafe-bas-droite.png')
+           break; 
+        }
+        case "Cafe-haut-droite": { 
+            img = require('../assets/sols/Cafe-haut-droite.png')
+           break; 
+        }
+        case "Cafe-haut-gauche": { 
+            img = require('../assets/sols/Cafe-haut-gauche.png')
+           break; 
+        }
         case "Chemin": { 
             img = require('../assets/sols/Chemin.png')
            break; 

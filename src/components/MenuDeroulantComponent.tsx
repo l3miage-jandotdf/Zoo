@@ -1,12 +1,22 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const DropdownMenu = () => {
   const [estOuvert, setEstOuvert] = useState(false);
+  const [afficherAnimaux, setAfficherAnimaux] = useState(false);
+  const [afficherStructure, setAfficherStructure] = useState(false);
 
   const toggleMenu = () => {
     setEstOuvert(!estOuvert);
+  };
+
+  const toggleAfficherAnimaux = () => {
+    setAfficherAnimaux(!afficherAnimaux);
+  };
+
+  const toggleAfficherStructure = () => {
+    setAfficherStructure(!afficherStructure);
   };
 
   const navigation = useNavigation();
@@ -21,78 +31,99 @@ const DropdownMenu = () => {
         )}
       </TouchableOpacity>
       {estOuvert && (
-        <View style={styles.menu}>
-          <TouchableOpacity
-            style={styles.add}
-            onPress={() =>
-              {
-                setEstOuvert(false);
-                navigation.navigate('ModifierTerrainComponent', {
-                  terrainType: 'Enclos',
-                })
-              }
-            }
-          >
-            <Text style={styles.addText}>Ajouter un enclos</Text>
-          </TouchableOpacity>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
 
-          <TouchableOpacity
-            style={styles.add}
-            onPress={() =>
-              {
-                setEstOuvert(false);
-                navigation.navigate('ModifierTerrainComponent', {
-                  terrainType: 'Zebre',
-                })
-              }
-            }
-          >
-            <Text style={styles.addText}>Ajouter un zèbre</Text>
-          </TouchableOpacity>
+          <View style={styles.menu}>
+            <TouchableOpacity
+              style={[styles.add, afficherAnimaux && styles.activeButton]}
+              onPress={toggleAfficherAnimaux}
+            >
+              <Text style={styles.addText}>Ajouter un animal</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.add}
-            onPress={() =>
-              {
-                setEstOuvert(false);
-                navigation.navigate('ModifierTerrainComponent', {
-                  terrainType: 'Autruche',
-                })
-              }
-            }
-          >
-            <Text style={styles.addText}>Ajouter une autruche</Text>
-          </TouchableOpacity>
+            {afficherAnimaux && (
+              <View style={styles.animauxContainer}>
+                <TouchableOpacity
+                  style={styles.addSub}
+                  onPress={() =>
+                    navigation.navigate('ModifierTerrainComponent', {
+                      terrainType: 'Zebre',
+                    })
+                  }
+                >
+                  <Text style={styles.addText}>Ajouter un zèbre</Text>
+                </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.add}
-            onPress={() =>
-              {
-                setEstOuvert(false);
-                navigation.navigate('ModifierTerrainComponent', {
-                  terrainType: 'Panda',
-                })
-              }
-            }
-          >
-            <Text style={styles.addText}>Ajouter un panda</Text>
-          </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.addSub}
+                  onPress={() =>
+                    navigation.navigate('ModifierTerrainComponent', {
+                      terrainType: 'Autruche',
+                    })
+                  }
+                >
+                  <Text style={styles.addText}>Ajouter une autruche</Text>
+                </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.add}
-            onPress={() =>
-              {
-                setEstOuvert(false);
+                <TouchableOpacity
+                  style={styles.addSub}
+                  onPress={() =>
+                    navigation.navigate('ModifierTerrainComponent', {
+                      terrainType: 'Panda',
+                    })
+                  }
+                >
+                  <Text style={styles.addText}>Ajouter un panda</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+
+            <TouchableOpacity
+              style={[styles.add, afficherStructure && styles.activeButton]}
+              onPress={toggleAfficherStructure}
+            >
+              <Text style={styles.addText}>Ajouter une structure</Text>
+            </TouchableOpacity>
+
+            {afficherStructure && (
+              <View style={styles.animauxContainer}>
+                <TouchableOpacity
+                  style={styles.addSub}
+                  onPress={() =>
+                    navigation.navigate('ModifierTerrainComponent', {
+                      terrainType: 'Cafe',
+                    })
+                  }
+                >
+                  <Text style={styles.addText}>Ajouter un café</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.addSub}
+                  onPress={() =>
+                    navigation.navigate('ModifierTerrainComponent', {
+                      terrainType: 'Enclos',
+                    })
+                  }
+                >
+                  <Text style={styles.addText}>Ajouter un enclos</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+
+            {/* Autres options */}
+            <TouchableOpacity
+              style={styles.add}
+              onPress={() =>
                 navigation.navigate('AjouterCheminComponent', {
                   terrainType: 'Chemin',
                 })
               }
-            }
-          >
-            <Text style={styles.addText}>Ajouter un chemin</Text>
-          </TouchableOpacity>
-
-        </View>
+            >
+              <Text style={styles.addText}>Ajouter un chemin</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       )}
     </View>
   );
@@ -103,45 +134,78 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     height: '100%',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   openMenu: {
-    width: '66%',
+    flexDirection: 'row',
   },
   toggleButton: {
-    width: 100,
+    width: 60,
     height: 100,
-    backgroundColor: 'lightblue',
+    backgroundColor: 'white',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    borderBottomLeftRadius: 10,
+    borderTopLeftRadius: 10,
+    marginTop: 'auto',
+    marginBottom: 'auto',
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   arrow: {
     fontSize: 40,
-    color: 'black'
+    color: 'black',
   },
   menu: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    transform: [{ translateX: 100 }],
-    backgroundColor: 'lightblue',
+    backgroundColor: 'white',
     elevation: 999,
-    width: '100%',
-    height: '100%'
+    padding: 10,
+    height: '100%',
+    paddingLeft: 20,
+    paddingRight: 20,
   },
   add: {
     width: 200,
-    height: 50,
-    backgroundColor: "white",
+    height: 60,
+    backgroundColor: 'white',
     marginTop: 20,
-    marginLeft: 30,
+    borderColor: 'black',
+    borderWidth: 2,
+    borderRadius: 5,
+    justifyContent: 'center',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  addSub: {
+    width: 100,
+    height: 90,
+    backgroundColor: 'white',
+    marginTop: 0,
+    borderColor: 'black',
+    borderWidth: 2,
+    borderRadius: 5,
+    justifyContent: 'center',
+    marginLeft: 10,
+    marginRight: 10,
   },
   addText: {
     fontSize: 20,
-    textAlign: "center",
-    marginTop: 'auto',
-    marginBottom: 'auto'
-  }
+    textAlign: 'center',
+  },
+  animauxContainer: {
+    flexDirection: 'row',
+    marginTop: 10,
+    marginLeft: 'auto',
+    marginRight: 'auto'
+  },
+  activeButton: {
+    backgroundColor: '#e3e3e3',
+  },
 });
 
 export default DropdownMenu;

@@ -29,7 +29,7 @@ const ModifierTerrain = () => {
     const { terrainType } = route.params || {};
     const [cases, setCases] = useState<Case[][]>([[]]);
     const [boutonValideBloque, setBoutonValideBloque] = useState<boolean>(true);
-    const [loading, setLoading] = useState<boolean>(true); // État de chargement pour afficher le spinner
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         if (terrainData.length > 0 && terrainData[0].length > 0) {

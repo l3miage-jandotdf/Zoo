@@ -31,6 +31,21 @@ const CaseService = {
             ]
             break;
         }
+        case "Cafe": {
+            cases = [
+                [    
+                    { id: 1, image: 'Cafe-haut-gauche', sol: 'Cafe-occupe' },
+                    { id: 1, image: 'Cafe-haut-droite', sol: 'Cafe-occupe' },
+                    
+                ],
+                [    
+                    { id: 1, image: 'Cafe-bas-gauche', sol: 'Cafe-occupe' },
+                    { id: 1, image: 'Cafe-bas-droite', sol: 'Cafe-occupe' },
+                    
+                ]
+            ]
+            break;
+        }
         case "Zebre":{
             cases = [[{ id: 1, image: 'Zebre', sol: 'Animal' }]];
             break;
