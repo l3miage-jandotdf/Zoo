@@ -9,7 +9,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux'
 import store from './src/store/Store'
-import MusiqueComponent from './src/components/MusiqueComponent';
 import AccueilComponent from './src/components/AccueilComponent';
 
 

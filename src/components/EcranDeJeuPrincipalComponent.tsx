@@ -5,7 +5,10 @@ import Terrain from './TerrainComponent';
 import MenuDeroulantComponent from './MenuDeroulantComponent';
 import { ReactNativeZoomableView } from '@openspacelabs/react-native-zoomable-view';
 
-
+/**
+ * Écran de jeu principal, renvoie le terrain et le bouton de menu
+ * Utilise ReactNativeZoomableView pour le déplacement et le zoom, couramment appelé "god-game" dans les jeux de gestion
+ */
 const EcranDeJeuPrincipal = () => {
 
     return (

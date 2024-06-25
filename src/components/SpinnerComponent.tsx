@@ -1,6 +1,9 @@
 import React from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 
+/**
+ * @returns un spinner pour dire à l'utilisateur de patienter
+ */
 const Spinner = () => {
     return (
         <View style={styles.spinnerContainer}>

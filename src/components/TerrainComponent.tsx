@@ -2,15 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Table, TableWrapper } from 'react-native-table-component';
 import CaseComponent from './CaseComponent';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/Store';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from '../store/Store';
 import { Case } from '../type/Case';
 import BonhommeComponent from './BonhommeComponent'; 
+import { fetchTerrainData } from '../slices/TerrainSlice';
 
 const Terrain = () => {
+    const dispatch: AppDispatch = useDispatch();
     const terrainData = useSelector((state: RootState) => state.terrain.terrainData);
-    const [tableauCase, setTableauCase] = useState<Case[][]>([]);
+    const loading = useSelector((state: RootState) => state.terrain.loading);
+    const error = useSelector((state: RootState) => state.terrain.error);
+
+    const [tableauCase, setTableauCase] = useState<Case[][]>([]); 
     const [bonhommes, setBonhommes] = useState([]);
+
+    useEffect(() => {
+        dispatch(fetchTerrainData());
+    }, [dispatch]);
 
     useEffect(() => {
         setTableauCase(terrainData);
@@ -19,8 +28,12 @@ const Terrain = () => {
         }
     }, [terrainData]);
 
-    const initBonhommes = (terrain) => {
-        const chemins = [];
+    /**
+     * Place les bonhommes sur les cases de types chemin
+     * @param terrain 
+     */
+    const initBonhommes = (terrain: Case[][]) => {
+        const chemins: { x: number, y: number }[] = [];
         for (let y = 0; y < terrain.length; y++) {
             for (let x = 0; x < terrain[y].length; x++) {
                 if (terrain[y][x].sol === 'Chemin') {
@@ -35,6 +48,14 @@ const Terrain = () => {
             initialPosition: { x: c.x * 40, y: c.y * 40 }
         })));
     };
+
+    if (loading) {
+        return <View><Text>Loading...</Text></View>;
+    }
+
+    if (error) {
+        return <View><Text>Error: {error}</Text></View>;
+    }
 
     return (
         <View style={styles.container}>

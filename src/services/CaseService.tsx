@@ -2,6 +2,11 @@ import { Case } from "../type/Case";
 
 const CaseService = { 
 
+ /**
+  * Retourne la ou les cases qui correspondent à une structure à poser
+  * @param terrainType le type de structure
+  * @returns la ou les cases à poser
+  */
   renderCases: function(terrainType: string) : Case[][] {
     let cases: Case[][];
     switch(terrainType){

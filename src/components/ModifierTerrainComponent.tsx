@@ -10,6 +10,7 @@ import { setTerrainData } from '../slices/TerrainSlice';
 import NouvelleCaseComponent from './NouvelleCaseComponent';
 import CaseService from '../services/CaseService';
 import Spinner from './SpinnerComponent'; // Import du composant Spinner
+import TerrainService from '../services/TerrainService';
 
 interface RouteParams {
     terrainType: string;
@@ -17,7 +18,12 @@ interface RouteParams {
 
 type ModifierTerrainRouteProp = RouteProp<{ params: RouteParams }, 'params'>;
 
+
+/**
+ * Recoie en paramètre un type de terrain 
+ */
 const ModifierTerrain = () => {
+    
     const dispatch = useDispatch();
     const terrainData = useSelector((state: RootState) => state.terrain.terrainData);
     const [tableauCase, setTableauCase] = useState<Case[][]>([]);
@@ -42,22 +48,31 @@ const ModifierTerrain = () => {
         setCases(CaseService.renderCases(terrainType));
     }, []);
 
+    /**
+     * @param x position x de la case à placer
+     * @param y position x de la case à placer
+     * @param caseLibre le type de sol sur lequel la case a le droit d'être placée 
+     * @return true si la case a le droit d'être placée sur le sol  
+     */
     const checkIfSolIsOk = (x: number, y: number, caseLibre: string): boolean => {
         let placementOk = true;
-
         cases.map((ligneDeCases: Case[], i) => {
             ligneDeCases.map((caseSeule: Case, j) => {
-                if (tableauCase[y + i][x + j].sol !== caseLibre) {
+                const sommeY = Math.round(y + i);
+                const sommeX = Math.round(x + j);
+                if (tableauCase[sommeY][sommeX].sol !== caseLibre) {
                     placementOk = false;
                 }
             });
         });
-
         setBoutonValideBloque(!placementOk);
-
         return placementOk;
     };
 
+    /**
+     * Met à jour le terrain avec la ou les nouvelles cases positionnées dans le redux
+     * Revient à l'écran principal 
+     */
     const handleConfirm = () => {
         const [x, y] = caseCoordinates;
 
@@ -71,15 +86,24 @@ const ModifierTerrain = () => {
             });
 
             setTableauCase(updatedTerrain);
-            dispatch(setTerrainData(updatedTerrain));
+
+            TerrainService.enregistrerTerrain(updatedTerrain)
+            .then(() => {
+              dispatch(setTerrainData(updatedTerrain));
+            })
+            .catch(error => {
+              console.error('Erreur lors de l\'enregistrement du terrain:', error);
+            });
+
             navigation.navigate('EcranDeJeuPrincipalComponent');
         } else {
             console.error('Invalid coordinates:', caseCoordinates);
         }
     };
 
+    // Affiche un spinner le temps que le tableau se charge
     if (loading) {
-        return <Spinner />; // Afficher le spinner pendant le chargement initial
+        return <Spinner />; 
     }
 
     return (

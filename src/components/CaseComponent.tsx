@@ -2,7 +2,6 @@ import React from 'react';
 import { ImageBackground, StyleSheet, View } from 'react-native';
 import { Cell } from 'react-native-table-component';
 
-
 interface CaseProps {
     caseData: {
         id: number;
@@ -13,9 +12,15 @@ interface CaseProps {
     length: number,
     placementOk : boolean
 }
-
+/**
+ * Renvoie la case à afficher. 
+ * L'image est en rouge si la position sur laquelle elle se trouve est invalide
+ */
 const CaseComponent: React.FC<CaseProps> = ({ caseData, cellIndex, length, placementOk }) => {
-    let img = require('../assets/sols/Default.png')
+
+    //React native ne permettant pas de faire un require sur une variable, on passe par un switch case
+    let img = require('../assets/sols/Default.png');
+
     switch(caseData.image) { 
         case "Herbe": { 
             img = require('../assets/sols/Herbe.png')

@@ -5,6 +5,10 @@ const BonhommeComponent = ({ initialPosition, tableauCase, cellSize }) => {
     const position = useRef(new Animated.ValueXY(initialPosition)).current;
     const animationRef = useRef(null);
 
+    /**
+     * Prend une direction au hasard
+     * @returns une direction
+     */
     const getNewDirection = () => {
         const directions = [
             { x: 1, y: 0 },   // right
@@ -15,10 +19,12 @@ const BonhommeComponent = ({ initialPosition, tableauCase, cellSize }) => {
         return directions[Math.floor(Math.random() * directions.length)];
     };
 
+    // Vérifie si la position (x, y) est sur un chemin
     const isOnPath = (x, y) => {
         return tableauCase[y] && tableauCase[y][x] && tableauCase[y][x].sol === 'Chemin';
     };
 
+    // Déplace le bonhomme dans une nouvelle direction s'il est sur un chemin
     const moveBonhomme = () => {
         const { x, y } = position.__getValue();
         const direction = getNewDirection();

@@ -9,6 +9,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { setTerrainData } from '../slices/TerrainSlice';
 import CaseService from '../services/CaseService';
 import Spinner from './SpinnerComponent';
+import TerrainService from '../services/TerrainService';
 
 interface RouteParams {
     terrainType: string;
@@ -17,6 +18,7 @@ interface RouteParams {
 type AjouterCheminRouteProp = RouteProp<{ params: RouteParams }, 'params'>;
 
 const AjouterChemin = () => {
+
     const dispatch = useDispatch();
     const terrainData = useSelector((state: RootState) => state.terrain.terrainData);
     const [tableauCase, setTableauCase] = useState<Case[][]>([]);
@@ -47,27 +49,47 @@ const AjouterChemin = () => {
         });
 
         setTableauCase(updatedTerrain);
-        dispatch(setTerrainData(updatedTerrain));
+        TerrainService.enregistrerTerrain(updatedTerrain)
+            .then(() => {
+              dispatch(setTerrainData(updatedTerrain));
+            })
+            .catch(error => {
+              console.error('Erreur lors de l\'enregistrement du terrain:', error);
+            });
+            
         navigation.navigate('EcranDeJeuPrincipalComponent');
     };
 
     useEffect(() => {
         if (tableauCase && tableauCase[0] && tableauCase[0][0]) {
             const panResponderInstance = PanResponder.create({
+                // Le panResponder doit démarrer lorsque le geste commence
                 onStartShouldSetPanResponder: () => true,
+
+                // Le panResponder doit démarrer lorsque le geste commence
                 onMoveShouldSetPanResponder: () => true,
+
+                // Ce qui se passe lorsque le panResponder prend le contrôle du geste             
                 onPanResponderGrant: (evt, gestureState) => {
                     ajouterCaseAuChemin(gestureState);
                 },
+
+                // Ce qui se passe lorsque le panResponder détecte un mouvement
                 onPanResponderMove: (evt, gestureState) => {
                     ajouterCaseAuChemin(gestureState);
                 },
+
+                // Ce qui se passe lorsque l'utilisateur lève son doigt
                 onPanResponderRelease: () => {}
             });
             setPanResponder(panResponderInstance);
         }
     }, [tableauCase]);
 
+    /**
+     * Ajoute une case dans le tableau des cases de chemin  
+     * @param gestureState coordonnées du mouvement fait par le doigt
+     */
     const ajouterCaseAuChemin = (gestureState: PanResponderGestureState) => {
         const { moveX, moveY } = gestureState;
         const x = Math.floor(moveX / cellSize);

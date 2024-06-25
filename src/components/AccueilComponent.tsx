@@ -2,11 +2,17 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, Dimensions } from 'react-native';
 import * as ScreenOrientation from 'expo-screen-orientation';
 
-
+/**
+ * Menu du jeu (accueil)
+ */
 const HomeScreen = ({ navigation }) => {
+
     const { width, height } = Dimensions.get('window');
     ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
 
+    /**
+     * Force la transition au mode paysage et navige sur l'écran de jeu principal
+     */
     const handlePress = async () => {
         await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_RIGHT);
         navigation.navigate('EcranDeJeuPrincipalComponent'); 

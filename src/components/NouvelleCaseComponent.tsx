@@ -15,23 +15,38 @@ interface NouvelleCaseProps {
 
 const NouvelleCaseComponent: React.FC<NouvelleCaseProps> = ({ x, terrainWidth, terrainHeight, setCaseCoordinates, cases, checkIfSolIsOk}) => {
 
+    //Indique la position initiale de la case à placer (on utilise AnimatedValue pour éviter le lag)
     const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
+
+    // PanResponder = un objet qui permet de gérer les interactions tactiles
     const [panResponder, setPanResponder] = useState(null);
+
+    // Indique si la case a le droit d'être placée ici
     const [placementOk, setPlacementOk] = useState<boolean>(false);
 
     useEffect(() => {
+
         if (cases && cases[0] && cases[0][0]) {
 
             const panResponderInstance = PanResponder.create({
+
+                // Le panResponder doit démarrer lorsque le geste commence
                 onStartShouldSetPanResponder: () => true,
+
+                // Le panResponder doit démarrer lorsque le geste commence
                 onMoveShouldSetPanResponder: () => true,
+
+                // Ce qui se passe lorsque le panResponder prend le contrôle du geste
                 onPanResponderGrant: () => {
+                    // On fixe le décalage à la position actuelle
                     position.setOffset({
                         x: position.x._value,
                         y: position.y._value,
                     });
                     position.setValue({ x: 0, y: 0 });
                 },
+
+                // Ce qui se passe lorsque le panResponder détecte un mouvement
                 onPanResponderMove: Animated.event(
                     [
                         null,
@@ -39,6 +54,8 @@ const NouvelleCaseComponent: React.FC<NouvelleCaseProps> = ({ x, terrainWidth, t
                     ],
                     { useNativeDriver: false }
                 ),
+
+                // Ce qui se passe lorsque l'utilisateur lève son doigt
                 onPanResponderRelease: () => {
                     let caseLibre = cases[0][0].sol === "Animal" ? "Enclos-herbe" : "Sol-herbe";
 
