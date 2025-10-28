@@ -2,6 +2,9 @@
 
 Mon petit Zoo est un jeu de gestion, dit "GodGame", c'est à dire que l'utilisateur est en vue du dessus et peut poser divers éléments en se déplaçant sur le terrain.
 
+![Mon petit zoo](assets/screen-petit-zoo.jpg)
+
+
 ## Fonctionnalités principales
 
 ### 1) Récupération du terrain
